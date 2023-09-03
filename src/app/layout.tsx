@@ -16,7 +16,6 @@ export default function RootLayout({
       <body style={{paddingTop: "60px"}}>
         <Navbar />
         {children}
-        <Footer />
       </body>
     </html>
   );
