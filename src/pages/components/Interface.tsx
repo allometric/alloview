@@ -25,6 +25,7 @@ export const Interface: FC<InterfaceProps> = (props: InterfaceProps) => {
 
   const onChange = (e: any) => {
     const tags: AlloTag[] = e.detail.tagify.getCleanValue();
+    console.log(tags)
     props.setQueryTags(tags);
   }
 

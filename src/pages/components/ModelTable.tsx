@@ -75,13 +75,17 @@ interface ModelTableProps {
 }
 
 export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
-  const tableContainterRef = useRef<HTMLTableSectionElement>(null);
+  const tableContainerRef = useRef<HTMLTableSectionElement>(null);
   const rerender = useReducer(() => ({}), {})[1]
 
   const fetchModels = async(page: number, pageSize: number) => {
-    const queryParams = {
-      page: page,
-      pageSize: pageSize
+    const queryParams: {[k: string]: any} = {};
+
+    queryParams.page = page
+    queryParams.pageSize = pageSize
+
+    if(props.queryTags.length > 0) {
+      queryParams.tagVals = props.queryTags.map(tag => tag.value)
     }
 
     const queryStr = stringify(queryParams)
@@ -94,7 +98,7 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
 
   const { data, fetchNextPage, isFetching, isLoading } = 
     useInfiniteQuery<ModelApiResponse>(
-      ['models'],
+      ['models', props.queryTags],
       async ({ pageParam = 0 }) => {
         const fetchedModels = await fetchModels(pageParam, 20)
         return fetchedModels
@@ -117,9 +121,7 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   })
 
   const nPages = data?.pages?.length as number;
-  //const endReached = !(data?.pages?.[nPages-1]?.hasNext)
-  console.log(data?.pages?.[nPages-1].hasNext)
-  const endReached = false
+  const endReached = !(data?.pages?.[nPages-1]?.hasNext)
   const totalFetched = flatData.length;
 
   const fetchMoreOnBottomReached = useCallback(
@@ -140,8 +142,13 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   )
 
   useEffect(() => {
-    fetchMoreOnBottomReached(tableContainterRef.current)
+    fetchMoreOnBottomReached(tableContainerRef.current)
   }, [fetchMoreOnBottomReached])
+
+  useEffect(() => {
+    // Scroll to the top of the table element
+   (tableContainerRef.current as HTMLElement).scrollTop = 0
+  }, [props.queryTags])
 
   return (
     <table className="table modelTable">
@@ -163,7 +170,7 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
       </thead>
       <tbody
         onScroll={e => fetchMoreOnBottomReached(e.target as HTMLTableSectionElement)}
-        ref={tableContainterRef}
+        ref={tableContainerRef}
       >
         {table.getRowModel().rows.map(row => (
           <tr key={row.id}>
