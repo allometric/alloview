@@ -21,5 +21,5 @@ export type Model = {
 
 export type ModelApiResponse = {
   data: Model[],
-  hasNext: boolean
+  totalCount: number
 }

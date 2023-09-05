@@ -15,7 +15,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ModelCell } from './TableComponents'
+import { ModelCell } from './ModelCell'
 import { AlloTag } from '@customTypes/tag'
 import { stringify } from 'querystring';
 import { 
@@ -120,25 +120,24 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
     getCoreRowModel: getCoreRowModel()
   })
 
-  const nPages = data?.pages?.length as number;
-  const endReached = !(data?.pages?.[nPages-1]?.hasNext)
+  const totalDBRowCount = data?.pages?.[0]?.totalCount ?? 0
   const totalFetched = flatData.length;
 
   const fetchMoreOnBottomReached = useCallback(
-    (containerRefElement? : HTMLDivElement | null) => {
+    (containerRefElement? : HTMLTableSectionElement | null) => {
       if(containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement
 
         if(
           scrollHeight - scrollTop - clientHeight < 300 &&
           !isFetching &&
-          !endReached
+          totalFetched < totalDBRowCount
         ) {
           fetchNextPage()
         }
       }
     },
-    [fetchNextPage, isFetching, totalFetched, endReached]
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
   )
 
   useEffect(() => {
@@ -147,7 +146,8 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
 
   useEffect(() => {
     // Scroll to the top of the table element
-   (tableContainerRef.current as HTMLElement).scrollTop = 0
+    console.log('Scroll Top');
+    (tableContainerRef.current as HTMLElement).scrollTop = 0
   }, [props.queryTags])
 
   return (
@@ -201,17 +201,3 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
     </table>
   )
 }
-
-//const rootElement = document.getElementById('root')
-//
-//if (!rootElement) throw new Error('Failed to find the root element')
-//
-//const queryClient = new QueryClient()
-//
-//ReactDOM.createRoot(rootElement).render(
-//  <StrictMode>
-//    <QueryClientProvider client={queryClient}>
-//      <ModelTable queryTags={[]}/>
-//    </QueryClientProvider>
-//  </StrictMode>
-//)

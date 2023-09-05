@@ -6,25 +6,37 @@ import { ModelApiResponse } from "@customTypes/model";
 
 
 const fetchModels = async (db: Db, page: number, pageSize: number = 20) => {
+  const query = {};
+  const totalCount = await db.collection("models").countDocuments(query);
+
   const cursor = await db
     .collection("models")
     .find({})
     .skip(pageSize * page)
     .limit(pageSize)
 
-  return cursor
+  return {
+    data: await cursor.toArray(),
+    totalCount: totalCount
+  }
 };
 
 const fetchFilteredModels = async(db: Db, tagVals: string[], page: number,
     pageSize: number = 20
   ) => {
+  const query = {model_type: {$in: tagVals}};
+  const totalCount = await db.collection("models").countDocuments(query);
+
   const cursor = await db
     .collection("models")
-    .find({model_type: {$in: tagVals}})
+    .find(query)
     .skip(pageSize * page)
     .limit(pageSize)
 
-  return cursor
+  return {
+    data: await cursor.toArray(),
+    totalCount: totalCount
+  }
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,24 +49,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const queryTags = query.tagVals as string[];
     const page = Number(query.page);
 
-    let cursor;
+    let mongoRes;
     if(queryTags === undefined) {
-      cursor = await fetchModels(db, page)
+      mongoRes = await fetchModels(db, page)
     } else {
       const queryTagArray = Array.isArray(queryTags) ? queryTags : [queryTags]
-      cursor = await fetchFilteredModels(db, queryTagArray, 0)
+      mongoRes = await fetchFilteredModels(db, queryTagArray, page)
     }
 
-    const clonedCursor = cursor.clone()
-
-    const dataArray = await cursor.toArray();
-
-    const dataObj = {
-      data: dataArray,
-      hasNext: await clonedCursor.hasNext()
-    }
-
-    return res.json(dataObj)
+    return res.json(mongoRes)
   }  catch (err) {
     console.log(err)
   }

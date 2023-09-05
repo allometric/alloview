@@ -20,11 +20,13 @@
     "next": "13.2.4",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
+    "react-collapse": "^5.1.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "18.7.5",
     "@types/react": "16.9.17",
+    "@types/react-collapse": "^5.0.1",
     "@types/yaireo__tagify": "^4.17.1",
     "typescript": "4.6.3"
   }
