@@ -4,7 +4,7 @@ import {
 import {
   Variable,
   Model
-} from './ModelTable'
+} from '@customTypes/model';
 
 const getModelCall = (response: Variable, covariates: Variable[]) => {
   const responseName = response.name;

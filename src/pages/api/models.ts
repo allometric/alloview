@@ -1,48 +1,60 @@
 import clientPromise from "../../../lib/mongodb";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import queryString from 'query-string';
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
+import { ModelApiResponse } from "@customTypes/model";
 
 
-const fetchAllModels = async (db: Db) => {
-  const res=  await db
+const fetchModels = async (db: Db, page: number, pageSize: number = 20) => {
+  const cursor = await db
     .collection("models")
     .find({})
-    .limit(20)
-    .toArray()
+    .skip(pageSize * page)
+    .limit(pageSize)
 
-  return res
+  return cursor
 };
 
-const fetchFilteredModels = async(db: Db, tagVals: string[]) => {
-  const res = await db
+const fetchFilteredModels = async(db: Db, tagVals: string[], page: number,
+    pageSize: number = 20
+  ) => {
+  const cursor = await db
     .collection("models")
     .find({model_type: {$in: tagVals}})
-    .limit(20)
-    .toArray()
+    .skip(pageSize * page)
+    .limit(pageSize)
 
-  return res
+  return cursor
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const query = req.query;
+
     const client = await clientPromise;
     const db = client.db("allodata");
 
     const queryTags = query.tagVals as string[];
+    const page = Number(query.page);
 
-    let models;
+    let cursor;
     if(queryTags === undefined) {
-      models = await fetchAllModels(db)
+      cursor = await fetchModels(db, page)
     } else {
       const queryTagArray = Array.isArray(queryTags) ? queryTags : [queryTags]
-      models = await fetchFilteredModels(db, queryTagArray)
+      cursor = await fetchFilteredModels(db, queryTagArray, 0)
     }
 
-    console.log(models)
-    
-    res.json(models);
+    const clonedCursor = cursor.clone()
+
+    const dataArray = await cursor.toArray();
+
+    const dataObj = {
+      data: dataArray,
+      hasNext: await clonedCursor.hasNext()
+    }
+
+    return res.json(dataObj)
   }  catch (err) {
     console.log(err)
   }
