@@ -49,12 +49,12 @@
   width: 200px;
 }
 
-.modelTable tr:first-child td {
-  border-top: none;
+.modelEllipse:hover {
+  text-decoration: underline #333333
 }
 
-.modelTable th:last-child {
-  padding-left: 3px;
+.modelTable tr:first-child td {
+  border-top: none;
 }
 
 /* width */

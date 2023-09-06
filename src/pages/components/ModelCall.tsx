@@ -32,7 +32,7 @@ const ModelCallEllipse: FC<ModelCallEllipseProps> = (props: ModelCallEllipseProp
 
   return(
     <span>
-      {props.isOpened ? null : <span onClick = {e => props.setOpened(true)}>...</span>}
+      {props.isOpened ? null : <span className='modelEllipse' onClick = {e => props.setOpened(true)}>...</span>}
       {props.isOpened ? covariateSpans : null}
     </span>
   )
