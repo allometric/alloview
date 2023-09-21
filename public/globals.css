@@ -2,6 +2,10 @@
   height: (100vh - 60px - 93px)
 }
 
+.modelCell {
+  user-select: none;
+}
+
 .modelCall {
   font-family: "Fira Code";
   margin-bottom: 2px;
@@ -75,4 +79,8 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.modelSummary {
+  max-width: 90%;
 }

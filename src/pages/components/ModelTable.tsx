@@ -25,7 +25,7 @@ import {
 } from '@tanstack/react-query';
 import { Model, ModelApiResponse } from '@customTypes/model';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { ModelSummary } from './ModelSummary';
 
 const columnHelper = createColumnHelper<Model>();
 
@@ -44,16 +44,6 @@ const CountryCell: FC<Model> = (props: Model) => {
 }
 
 const columns = [
-  columnHelper.accessor((row) => row,
-    {
-    id: 'actions',
-    header: '',
-    maxSize: 10,
-    cell: ({row, getValue}) => <FontAwesomeIcon
-      icon={faChevronRight}
-      onClick={e => row.toggleExpanded()}
-    />
-  }),
   columnHelper.accessor(row => ModelCell(row), 
     {
       id: 'Model',
@@ -90,8 +80,6 @@ interface ModelTableProps {
 export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   const tableContainerRef = useRef<HTMLTableSectionElement>(null);
   const rerender = useReducer(() => ({}), {})[1];
-
-  const [expanded, setExpanded] = useState<ExpandedState>({});
 
   const fetchModels = async(page: number, pageSize: number) => {
     const queryParams: {[k: string]: any} = {};
@@ -132,12 +120,7 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   const table = useReactTable({
     data: flatData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    state: {
-      expanded
-    },
-    onExpandedChange: setExpanded,
-    getExpandedRowModel: getExpandedRowModel()
+    getCoreRowModel: getCoreRowModel()
   })
 
   const totalDBRowCount = data?.pages?.[0]?.totalCount ?? 0
@@ -192,26 +175,14 @@ export const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
         onScroll={e => fetchMoreOnBottomReached(e.target as HTMLTableSectionElement)}
         ref={tableContainerRef}
       >
-        {table.getRowModel().rows.map(row => {
-          if(row.getIsExpanded()) {
-            return <><tr key={row.id}>
-              {row.getVisibleCells().map(cell => {
-                return <td key={cell.id} style={{minWidth: cell.column.columnDef.minSize, maxWidth: cell.column.columnDef.maxSize}}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              })}
-            </tr>
-            <tr><td colSpan={5}>{row.original.model_id}</td></tr></>
-          } else {
-            return <tr key={row.id}>
-              {row.getVisibleCells().map(cell => {
-                return <td key={cell.id} style={{minWidth: cell.column.columnDef.minSize, maxWidth: cell.column.columnDef.maxSize}}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              })}
-            </tr>
-          }
-        }
+        {table.getRowModel().rows.map(row => 
+          <tr key={row.id}>
+            {row.getVisibleCells().map(cell => {
+              return <td key={cell.id} style={{minWidth: cell.column.columnDef.minSize, maxWidth: cell.column.columnDef.maxSize}}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            })}
+          </tr>
         )}
       </tbody>
       <tfoot>

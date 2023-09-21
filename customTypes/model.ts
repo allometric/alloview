@@ -16,7 +16,8 @@ export type Model = {
   model_type: string,
   response: Variable,
   covariates: Variable[],
-  descriptors: Descriptors
+  descriptors: Descriptors,
+  predict_fn_body: string[]
 }
 
 export type ModelApiResponse = {
