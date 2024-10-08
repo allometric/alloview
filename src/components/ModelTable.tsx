@@ -19,6 +19,7 @@ import {
   useInfiniteQuery
 } from '@tanstack/react-query';
 import { TaxaCell } from './TaxaCell';
+import { Option } from './ModelTypeBox';
 
 
 const columnHelper = createColumnHelper<Model>();
@@ -48,9 +49,10 @@ const columns = [
 interface ModelTableProps {
   limit?: number;
   onNextPage?: () => void;
+  selectedModelType: Option | null;
 }
 
-const ModelTable: FC<ModelTableProps> = () => {
+const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   const containerRef = useRef<HTMLTableSectionElement>(null);
 
   const fetchModels = async(page: number, pageSize: number) => {
@@ -62,12 +64,18 @@ const ModelTable: FC<ModelTableProps> = () => {
     const queryStr = stringify(queryParams)
     const urlStr = 'https://api.allometric.org/models/?'.concat(queryStr)
 
+    let findObj = {};
+
+    if (props.selectedModelType !== null) {
+      findObj = {model_type: props.selectedModelType.label}
+    }
+
     const response = await fetch(urlStr, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({})
+      body: JSON.stringify(findObj)
     })
 
     if (!response.ok) {
@@ -75,8 +83,6 @@ const ModelTable: FC<ModelTableProps> = () => {
     }
 
     const res = await response.json();
-
-    console.log(res)
 
     const res_obj: ModelAPIResponse = {
       data: res,
@@ -91,7 +97,7 @@ const ModelTable: FC<ModelTableProps> = () => {
     fetchNextPage,
     isFetchingNextPage 
   } = useInfiniteQuery({
-    queryKey: ['models'],
+    queryKey: ['models', props.selectedModelType],
     queryFn: ({pageParam = 1}) => fetchModels(pageParam, 20),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -118,7 +124,6 @@ const ModelTable: FC<ModelTableProps> = () => {
     (containerRefElement? : HTMLTableSectionElement | null) => {
       if(containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement
-        console.log(lastBatchLength)
         if(
           scrollHeight - scrollTop - clientHeight < 300 &&
           !isFetchingNextPage &&
