@@ -16,7 +16,9 @@ export const TaxaCell: FC<Model> = (props: Model) => {
     <div className='taxaCell'>
       <GenusSpeciesText
         isOpened = {false}
-        genusSpecies = {props.descriptors.taxa.map(taxon => formatTaxon(taxon))}
+        genusSpecies = {
+          props.descriptors.taxa !== undefined ? props.descriptors.taxa.map(taxon => formatTaxon(taxon)) : [""]
+        }
       />
     </div>
   )

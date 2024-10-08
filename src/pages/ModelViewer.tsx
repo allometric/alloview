@@ -4,8 +4,9 @@ import {
   SyntheticEvent
 } from 'react';
 import ModelTable from '../components/ModelTable';
-import ModelTypeBox from '../components/ModelTypeBox';
-import { Option } from '../components/ModelTypeBox';
+import ModelTypeBox from '../components/boxes/ModelTypeBox';
+import { Option } from '../components/boxes/ModelTypeBox';
+import CountryBox from '../components/boxes/CountryBox';
 
 interface ModelViewerProps {
   limit?: number;
@@ -14,19 +15,30 @@ interface ModelViewerProps {
 
 const ModelViewer: FC<ModelViewerProps> = () => {
   const [modelType, setModelType] = useState<Option | null>(null);
+  const [country, setCountry] = useState<Option | null>(null);
 
-  const handleOptionChange = (event: SyntheticEvent, value: Option | null) => {
-    console.log(value)
+  const handleTypeChange = (event: SyntheticEvent, value: Option | null) => {
     setModelType(value);
+  };
+
+  const handleCountryChange = (event: SyntheticEvent, value: Option | null) => {
+    setCountry(value);
   };
 
   return (
     <div className='container viewerContainer'>
       <ModelTypeBox
         selectedOption={modelType}
-        onChange={handleOptionChange}
+        onChange={handleTypeChange}
       />
-      <ModelTable selectedModelType={modelType}/>
+      <CountryBox
+        selectedOption={country}
+        onChange={handleCountryChange}
+      />
+      <ModelTable
+        selectedModelType={modelType}
+        selectedCountry={country}
+      />
     </div>
   )
 }

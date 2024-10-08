@@ -19,7 +19,7 @@ import {
   useInfiniteQuery
 } from '@tanstack/react-query';
 import { TaxaCell } from './TaxaCell';
-import { Option } from './ModelTypeBox';
+import { Option } from './boxes/ModelTypeBox';
 
 
 const columnHelper = createColumnHelper<Model>();
@@ -50,7 +50,10 @@ interface ModelTableProps {
   limit?: number;
   onNextPage?: () => void;
   selectedModelType: Option | null;
+  selectedCountry: Option | null;
 }
+
+type MongoDBFilter = string | { $in: string[] };
 
 const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   const containerRef = useRef<HTMLTableSectionElement>(null);
@@ -64,10 +67,14 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
     const queryStr = stringify(queryParams)
     const urlStr = 'https://api.allometric.org/models/?'.concat(queryStr)
 
-    let findObj = {};
+    const findObj: Record<string, MongoDBFilter> = {};
 
-    if (props.selectedModelType !== null) {
-      findObj = {model_type: props.selectedModelType.label}
+    if (props.selectedModelType) {
+      findObj.model_type = props.selectedModelType.label
+    }
+
+    if (props.selectedCountry) {
+      findObj["descriptors.country"] = {$in: [props.selectedCountry.label]}
     }
 
     const response = await fetch(urlStr, {
@@ -97,7 +104,7 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
     fetchNextPage,
     isFetchingNextPage 
   } = useInfiniteQuery({
-    queryKey: ['models', props.selectedModelType],
+    queryKey: ['models', props.selectedModelType, props.selectedCountry],
     queryFn: ({pageParam = 1}) => fetchModels(pageParam, 20),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
