@@ -19,7 +19,7 @@ import {
   useInfiniteQuery
 } from '@tanstack/react-query';
 import { TaxaCell } from './TaxaCell';
-import { Option } from './boxes/ModelTypeBox';
+import { Option } from '../types/box';
 
 
 const columnHelper = createColumnHelper<Model>();
@@ -51,9 +51,10 @@ interface ModelTableProps {
   onNextPage?: () => void;
   selectedModelType: Option | null;
   selectedCountry: Option | null;
+  selectedGenusSpecies: Option | null;
 }
 
-type MongoDBFilter = string | { $in: string[] };
+type MongoDBFilter = string | { $in: string[] } | { $elemMatch: {genus: string; species: string} };
 
 const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
   const containerRef = useRef<HTMLTableSectionElement>(null);
@@ -75,6 +76,19 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
 
     if (props.selectedCountry) {
       findObj["descriptors.country"] = {$in: [props.selectedCountry.label]}
+    }
+
+    if (props.selectedGenusSpecies) {
+      const [genus, species] = props.selectedGenusSpecies.label.split(' ')
+
+      console.log('test')
+
+      findObj['descriptors.taxa'] = {
+        $elemMatch: {
+          genus: genus,
+          species: species
+        }
+      }
     }
 
     const response = await fetch(urlStr, {
@@ -104,7 +118,10 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
     fetchNextPage,
     isFetchingNextPage 
   } = useInfiniteQuery({
-    queryKey: ['models', props.selectedModelType, props.selectedCountry],
+    queryKey: [
+      'models', props.selectedModelType, props.selectedCountry,
+      props.selectedGenusSpecies
+    ],
     queryFn: ({pageParam = 1}) => fetchModels(pageParam, 20),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {

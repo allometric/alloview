@@ -3,6 +3,25 @@ body {
   padding-top: 60px;
 }
 
+.viewerContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.boxContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.MuiAutocomplete-root {
+  flex: 1; /* Makes the Autocomplete take equal width */
+  margin: 0 10px; /* Adds spacing between the divs */
+  min-width: 0; /* Ensures the divs shrink appropriately */
+}
+
 .modelCell {
   user-select: none;
 }

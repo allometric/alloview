@@ -4,14 +4,11 @@ import {
   FC
 } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { Option } from './ModelTypeBox';
+import { BoxProps } from '../../types/box';
+import { Option } from '../../types/box';
 
-interface CountryBoxProps {
-  selectedOption: Option | null;
-  onChange: (event: React.SyntheticEvent, value: Option | null) => void;
-}
 
-const CountryBox: FC<CountryBoxProps> = (props: CountryBoxProps) => {
+const CountryBox: FC<BoxProps> = (props: BoxProps) => {
   const [options, setOptions] = useState<Option[]>([]);  // For storing autocomplete options
 
   // Fetch the data when the component mounts
@@ -42,7 +39,7 @@ const CountryBox: FC<CountryBoxProps> = (props: CountryBoxProps) => {
       onChange={props.onChange}  // Handle selection
       options={options}  // Options from API
       getOptionLabel={(option) => option.label}  // How to display each option
-      renderInput={(params) => <TextField {...params} label="Select an Option" variant="outlined" />}
+      renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
       isOptionEqualToValue={(option, value) => option.id === value?.id}  // Ensure proper matching
     />
   );
