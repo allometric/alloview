@@ -29,20 +29,22 @@ const columns = [
     {
       id: 'Model',
       cell: info => <div>{info.getValue()}</div>,
-      minSize: 250,
-      maxSize: 300
+      size: 250
     }
   ),
   columnHelper.accessor('inline_citation', {
     header: 'Publication',
+    size: 200
   }),
   columnHelper.accessor(row => CountryCell(row), {
     id: 'Country',
-    cell: info => info.getValue()
+    cell: info => info.getValue(),
+    size: 200
   }),
   columnHelper.accessor(row => TaxaCell(row), {
     id: 'Taxa',
-    cell: info => info.getValue()
+    cell: info => info.getValue(),
+    size: 200
   })
 ];
 
@@ -170,7 +172,7 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
-              <th key={header.id} style={{minWidth: header.column.columnDef.minSize, maxWidth: header.column.columnDef.maxSize}}>
+              <th key={header.id} style={{width: header.column.columnDef.size}}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -190,7 +192,7 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
           if(row.getIsExpanded()) {
             return <><tr key={row.id}>
               {row.getVisibleCells().map(cell => {
-                return <td key={cell.id} style={{minWidth: cell.column.columnDef.minSize, maxWidth: cell.column.columnDef.maxSize}}>
+                return <td key={cell.id} style={{width: cell.column.columnDef.size}}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               })}
@@ -199,7 +201,7 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
           } else {
             return <tr key={row.id}>
               {row.getVisibleCells().map(cell => {
-                return <td key={cell.id} style={{minWidth: cell.column.columnDef.minSize, maxWidth: cell.column.columnDef.maxSize}}>
+                return <td key={cell.id} style={{width: cell.column.columnDef.size}}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               })}

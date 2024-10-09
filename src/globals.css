@@ -1,12 +1,16 @@
 body {
-  height: (100vh - 60px - 93px);
+  height: 105vh;
   padding-top: 60px;
+  display: flex;
+  overflow: hidden;
 }
 
 .viewerContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  max-width: 850px;
+  max-height: 100%;
+  align-self: center;
 }
 
 .boxContainer {
@@ -14,6 +18,7 @@ body {
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .MuiAutocomplete-root {
@@ -28,6 +33,7 @@ body {
 
 .modelCall {
   font-family: "Fira Code";
+  font-size: 14px;
   margin-bottom: 2px;
   cursor: default;
 }
@@ -50,6 +56,7 @@ body {
   overflow: hidden;
   height: 700px;
   padding-bottom: 60px;
+  table-layout: auto;
 }
 
 .modelTable tbody {
@@ -64,13 +71,12 @@ body {
 }
 
 .modelTable thead tr {
-  display: block;
+  display: table-row-group;
 }
 .modelTable th,
 .modelTable td {
-  padding: 5px;
   text-align: left;
-  width: 200px;
+  box-sizing: border-box;
 }
 
 .modelEllipse:hover {
@@ -83,7 +89,7 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 1px;
 }
 
 /* Track */
