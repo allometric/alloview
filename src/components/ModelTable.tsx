@@ -197,7 +197,7 @@ const ModelTable: FC<ModelTableProps> = (props: ModelTableProps) => {
                 </td>
               })}
             </tr>
-            <tr><td colSpan={5}>{row.original.model_id}</td></tr></>
+            <tr><td colSpan={5}>{row.original._id}</td></tr></>
           } else {
             return <tr key={row.id}>
               {row.getVisibleCells().map(cell => {

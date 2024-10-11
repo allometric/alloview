@@ -1,3 +1,5 @@
+import { BibTeXEntry } from "./bibtex"
+
 export type Taxon = {
   family: string | null,
   genus: string | null,
@@ -12,17 +14,19 @@ export type Descriptors = {
 
 export type Variable = {
   name: string,
-  unit: string
+  unit: string,
+  description: string
 }
 
 export type Model = {
   pub_id: string,
   inline_citation: string,
-  model_id: string, 
+  _id: string, 
   model_type: string,
   response: Variable,
   covariates: Variable[],
-  descriptors: Descriptors
+  descriptors: Descriptors,
+  citation: BibTeXEntry
 }
 
 export type ModelAPIResponse = {

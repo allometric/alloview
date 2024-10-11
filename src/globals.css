@@ -110,3 +110,23 @@ body {
 .modelSummary {
   max-width: 90%;
 }
+
+.modelDetailsContainer {
+  width: 850px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modelDetailsHeader {
+  text-align: left;
+}
+
+.variableList {
+  text-align: left;
+}
+
+.variableListItem {
+  font-family: "Fira Code";
+  font-size: 14px;
+}
