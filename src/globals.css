@@ -141,6 +141,10 @@ pre code.hljs {
   padding: 0;
 }
 
+.descriptors {
+  text-align: left;
+}
+
 .variableList {
   text-align: left;
 }

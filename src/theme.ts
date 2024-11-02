@@ -2,20 +2,24 @@ import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
   components: {
-    MuiAccordion: {
+    MuiList: {
       styleOverrides: {
         root: {
-          width: '100%',
-          boxShadow: 'none',
-          backgroundColor: 'transparent',
-          border: '1px solid #ddd'
+          paddingTop: 0
         }
       }
     },
-    MuiAccordionDetails: {
+    MuiListItem: {
       styleOverrides: {
         root: {
-          textAlign: 'left'
+          paddingLeft: 0
+        }
+      }
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          minWidth: 26
         }
       }
     },

@@ -171,12 +171,12 @@ const GeographicContext: FC<GeographicContextProps> = (props: GeographicContextP
         </ListItemIcon>
         <ListItemText primary="Geographic Context"></ListItemText>
       </ListItem>
-      <List>
+      <List component="div" disablePadding sx = {{paddingLeft: 4, listStyleType: 'disc'}}>
         {props.country?.map(country =>
-            <ListItemText>{country}</ListItemText>
+            <ListItemText sx = {{display: 'list-item'}}>{country}</ListItemText>
         )}
-        {props.region?.map(country =>
-            <ListItemText>{country}</ListItemText>
+        {props.region?.map(region =>
+            <ListItemText sx = {{display: 'list-item'}}>{region}</ListItemText>
         )}
       </List>
     </>
@@ -196,9 +196,9 @@ const TaxonomicContext: FC<TaxonomicContextProps> = (props: TaxonomicContextProp
         </ListItemIcon>
         <ListItemText primary="Taxonomic Context"></ListItemText>
       </ListItem>
-      <List>
+      <List component="div" disablePadding sx = {{paddingLeft: 4, listStyleType: 'disc'}}>
         {props.taxa.map(taxa => 
-          <ListItemText>
+          <ListItemText sx = {{display: 'list-item'}}>
             {taxa.family ?? ''} {taxa.genus ?? ''} {taxa.species ?? ''}
           </ListItemText>
         )}
@@ -245,14 +245,10 @@ const OtherDescriptors: FC<OtherDescriptorsProps> = (props: OtherDescriptorsProp
 const Descriptors: FC = () => {
   const model = useModel();
 
-  // TODO Rather than spawning one 'descriptors' accordion, this dynamically
-  // chooses some to display if they exist: countries/regions and taxa
-  // the others will be hidden in an optional expandable element later.
-
   const { country, region, taxa, ...otherDescriptors } = model.descriptors 
 
   return(
-    <>
+    <div className='descriptors'>
     <h2>Descriptors</h2>
     <List>
       {
@@ -276,20 +272,27 @@ const Descriptors: FC = () => {
         />)
       }
     </List>
-    </>
+    </div>
   )
 }
 
 const Citation: FC = () => {
   const model = useModel();
 
-  const citationParsed = new Cite(model.citation)
+  const citation = {
+    ...model.citation,
+    author: model.citation.authors,
+    issued: {"date-parts": [[model.citation.year, 1, 1]]},
+    'container-title': model.citation.journal
+  }
+
+  console.log(citation)
+
+  const citationParsed = new Cite(citation)
   const citationFmt = citationParsed.format('bibliography', {
     format: 'text',
-    template: 'chicago'
+    template: 'harvard'
   })
-
-  console.log(citationParsed)
 
   return(
     <>{citationFmt}</>
@@ -326,6 +329,7 @@ const ModelDetails: FC = () => {
               />
               <CallDescription/>
               <Descriptors/>
+              <Citation/>
             </div>
           </ModelContext.Provider>
         ) : (
