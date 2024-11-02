@@ -18,6 +18,11 @@ export type Variable = {
   description: string
 }
 
+type Parameter = {
+  name: string,
+  value: number
+}
+
 export type Model = {
   pub_id: string,
   inline_citation: string,
@@ -25,7 +30,9 @@ export type Model = {
   model_type: string,
   response: Variable,
   covariates: Variable[],
+  parameters: Parameter[],
   descriptors: Descriptors,
+  predict_fn_body: string[],
   citation: BibTeXEntry
 }
 

@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-router-dom";
 
 export const Navbar: FC = () => {
   return(
@@ -15,7 +16,7 @@ export const Navbar: FC = () => {
       <div id="navbar" className="navbar-collapse collapse">
         <ul className="nav navbar-nav">
           <li>
-            <a href="./">Models</a>
+            <Link to = "/">Models</Link>
           </li>
           <li>
             <a href="./publications.html">Publications</a>
@@ -23,7 +24,7 @@ export const Navbar: FC = () => {
         </ul>
         <ul className="nav navbar-nav navbar-right">
           <li>
-            <a href="https://github.com/allometric/allometric/" className="external-link">
+            <a href="https://github.com/allometric/" className="external-link">
               <FontAwesomeIcon icon={faGithub} style={{height: "20px"}} />
             </a>
           </li></ul>

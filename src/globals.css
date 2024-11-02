@@ -89,7 +89,7 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 1px;
+  width: 5px;
 }
 
 /* Track */
@@ -113,13 +113,32 @@ body {
 
 .modelDetailsContainer {
   width: 850px;
+}
+
+.modelItemsContainer {
+  width: 100%;
+  overflow-y: auto;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.modelDetailsHeader {
+.modelHeader {
   text-align: left;
+}
+
+.modelRCode {
+  width: 100%;
+  text-align: left
+}
+
+.hljs {
+  background: #f8f8f8;
+}
+
+pre code.hljs {
+  padding: 0;
 }
 
 .variableList {
@@ -129,4 +148,16 @@ body {
 .variableListItem {
   font-family: "Fira Code";
   font-size: 14px;
+}
+
+.callDescription {
+  text-align: left;
+}
+
+.geographicContext {
+  text-align: left;
+}
+
+.taxonomicContext {
+  text-align: left;
 }

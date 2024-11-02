@@ -38,7 +38,7 @@ const ModelCallEllipse: FC<ModelCallEllipseProps> = (props: ModelCallEllipseProp
 }
 
 export const ModelCall: FC<ModelCallProps> = (props: ModelCallProps) => {
-  const [isOpened, setOpened] = useState(false);
+  const [isOpened, setOpened] = useState(props.isOpened);
   const responseName = props.response.name;
   const p = props.covariates.length;
 

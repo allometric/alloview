@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import ModelViewer from './ModelViewer';
 
-const Models: React.FC = () => {
+const Models: FC = () => {
   return (
     <ModelViewer/>
   );
