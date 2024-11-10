@@ -19,15 +19,15 @@ const ModelViewer: FC<ModelViewerProps> = () => {
   const [country, setCountry] = useState<Option | null>(null);
   const [genusSpecies, setGenusSpecies] = useState<Option | null>(null);
 
-  const handleTypeChange = (event: SyntheticEvent, value: Option | null) => {
+  const handleTypeChange = (_: SyntheticEvent, value: Option | null) => {
     setModelType(value);
   };
 
-  const handleCountryChange = (event: SyntheticEvent, value: Option | null) => {
+  const handleCountryChange = (_: SyntheticEvent, value: Option | null) => {
     setCountry(value);
   };
 
-  const handleGenusSpeciesChange = (event: SyntheticEvent, value: Option | null) => {
+  const handleGenusSpeciesChange = (_: SyntheticEvent, value: Option | null) => {
     setGenusSpecies(value);
   };
 
