@@ -18,9 +18,6 @@ export const Navbar: FC = () => {
           <li>
             <Link to = "/">Models</Link>
           </li>
-          <li>
-            <a href="./publications.html">Publications</a>
-          </li>
         </ul>
         <ul className="nav navbar-nav navbar-right">
           <li>

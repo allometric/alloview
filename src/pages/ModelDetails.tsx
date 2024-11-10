@@ -16,6 +16,7 @@ import {
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ForestIcon from '@mui/icons-material/Forest';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CircleIcon from '@mui/icons-material/Circle';
 
 // @ts-expect-error asdf
 import Cite from 'citation-js'
@@ -67,7 +68,8 @@ const fmtFnCall = (covariateNames: string[]) => {
 }
 
 const fmtFnBody = (fn_body: string[]) => {
-  const indented = fn_body.map(line => `  ${line}\n`)
+
+  const indented = fn_body.map(line => `  ${line}\n`).join("")
 
   return(indented + '}')
 }
@@ -75,6 +77,7 @@ const fmtFnBody = (fn_body: string[]) => {
 const fmtFn = (covariateNames: string[], fn_body: string[]) => {
   const call = fmtFnCall(covariateNames)
   const body = fmtFnBody(fn_body)
+
 
   return(call + '\n' + body)
 }
@@ -89,7 +92,7 @@ const ModelRCode: FC<ModelRCodeProps> = (props: ModelRCodeProps) => {
   const formattedBody = fmtFn(props.covariateNames, props.fn_body)
 
   const codeRef = useRef<HTMLElement>(null);
-  
+
   useEffect(() => {
     if (codeRef.current) {
       hljs.highlightElement(codeRef.current)
@@ -227,10 +230,19 @@ const OtherDescriptors: FC<OtherDescriptorsProps> = (props: OtherDescriptorsProp
             if(value.length > 0) {
               return (
                 <>
-                <ListItemText>{snakeToTitleCase(key)}</ListItemText>
-                <List>
+                <ListItem>
+                  <ListItemIcon>
+                    <CircleIcon style={{fontSize: 10}}/>
+                  </ListItemIcon>
+                  <ListItemText primary = {snakeToTitleCase(key)}></ListItemText>
+                </ListItem>
+                <List component="div" disablePadding sx = {{paddingLeft: 4, listStyleType: 'disc'}}>
                   {
-                    value.map(val => <ListItem>{val}</ListItem>)
+                    value.map(val => <ListItem>
+                      <ListItemText sx = {{display: 'list-item'}}>
+                        {val}
+                      </ListItemText>
+                    </ListItem>)
                   }
                 </List>
                 </>
@@ -286,8 +298,6 @@ const Citation: FC = () => {
     'container-title': model.citation.journal
   }
 
-  console.log(citation)
-
   const citationParsed = new Cite(citation)
   const citationFmt = citationParsed.format('bibliography', {
     format: 'text',
@@ -295,7 +305,10 @@ const Citation: FC = () => {
   })
 
   return(
-    <>{citationFmt}</>
+    <div className="citation">
+      <h2>Citation</h2>
+      {citationFmt}
+    </div>
   )
 }
 

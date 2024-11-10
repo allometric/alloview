@@ -33,6 +33,7 @@ export type Model = {
   parameters: Parameter[],
   descriptors: Descriptors,
   predict_fn_body: string[],
+  predict_fn_body_populated: string[],
   citation: BibTeXEntry
 }
 
