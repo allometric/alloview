@@ -8,6 +8,7 @@ import './pkgdown.css'
 import './globals.css'
 import theme from './theme'
 import "@fontsource/fira-code";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>,

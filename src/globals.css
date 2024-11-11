@@ -5,6 +5,10 @@ body {
   overflow: hidden;
 }
 
+#root {
+  padding-top: 10px;
+}
+
 .viewerContainer {
   display: flex;
   flex-direction: column;
