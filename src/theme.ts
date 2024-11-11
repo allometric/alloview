@@ -29,7 +29,31 @@ const theme = createTheme({
           fontSize: '16px'
         }
       }
-    }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px'
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px'
+        }
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          fontSize: '12px',  // Font size for the input part of Autocomplete
+        },
+        option: {
+          fontSize: '12px',  // Font size for each option in the dropdown
+        },
+      },
+    },
   }
 })
 
