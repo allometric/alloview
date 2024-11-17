@@ -39,7 +39,7 @@ const ModelTypeBox: FC<BoxProps> = (props: BoxProps) => {
       onChange={props.onChange}  // Handle selection
       options={options}  // Options from API
       getOptionLabel={(option) => option.label}  // How to display each option
-      renderInput={(params) => <TextField {...params} label="Model Type" variant="outlined" />}
+      renderInput={(params) => <TextField {...params} label="Type" variant="outlined" />}
       isOptionEqualToValue={(option, value) => option.id === value?.id}  // Ensure proper matching
     />
   );
