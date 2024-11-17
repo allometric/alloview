@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "add-domain": "echo app.alometric.org > dist/CNAME ",
+    "add-domain": "echo app.allometric.org > dist/CNAME ",
     "deploy": "vite build && npm run add-domain && gh-pages -d dist"
   },
   "dependencies": {
